@@ -1,0 +1,34 @@
+{
+  "name": "@briannorman9/eli-utils",
+  "version": "1.0.0",
+  "description": "Utility functions for web experiments with ELI (Experimentation Local Interface)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "eli",
+    "utils",
+    "utilities",
+    "web-experiments",
+    "dom",
+    "helpers"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/briannorman/eli-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/briannorman/eli-utils/issues"
+  },
+  "homepage": "https://github.com/briannorman/eli-utils#readme",
+  "files": [
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ]
+}
+
