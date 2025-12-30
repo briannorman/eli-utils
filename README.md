@@ -23,11 +23,20 @@ import utils from '@eli/utils';
 ### DOM Utilities
 
 #### `waitForElement(selector)`
-Wait for an element to appear in the DOM.
+Wait for the first element matching the selector to appear in the DOM. Note: This only matches the first element. Use `waitForElements()` to match all elements.
 
 ```javascript
 utils.waitForElement('#myElement').then(element => {
   console.log('Element found:', element);
+});
+```
+
+#### `waitForElements(selector, context)`
+Wait for all elements matching the selector to appear in the DOM. Note: This matches all elements. Use `waitForElement()` to match only the first element.
+
+```javascript
+utils.waitForElements('.product-card').then(elements => {
+  elements.forEach(card => card.style.border = '2px solid red');
 });
 ```
 
@@ -39,17 +48,59 @@ utils.waitUntil(() => document.readyState === 'complete');
 ```
 
 #### `select(selector, context)`
-Select a single element.
+Select a single element (returns immediately, does not wait).
 
 ```javascript
 const button = utils.select('#myButton');
 ```
 
-#### `selectAll(selector, context)`
-Select multiple elements.
+#### `observeSelector(selector, callback, options)`
+Observe mutations on the first element matching the selector. The callback is called every time the element is mutated (attributes, children, text, etc.). Note: This only observes the first matching element. Use `observeSelectors()` to observe all elements.
+
+**Mutation types:**
+- `'childList'` - Watch for child nodes being added/removed (default: true)
+- `'attributes'` - Watch for attribute changes (default: true)
+- `'characterData'` - Watch for text content changes (default: false)
+- `'subtree'` - Watch all descendants, not just direct children (default: true)
+- `'attributeOldValue'` - Include old attribute value in mutation record (default: false)
+- `'characterDataOldValue'` - Include old text value in mutation record (default: false)
+- `'attributeFilter'` - Array of attribute names to observe (only these attributes will trigger)
 
 ```javascript
-const buttons = utils.selectAll('.button');
+// Observe attribute changes on a button
+const stopObserving = utils.observeSelector('#myButton', (element, mutation) => {
+  console.log('Button mutated:', mutation.type);
+  if (mutation.type === 'attributes') {
+    console.log('Attribute changed:', mutation.attributeName);
+  }
+}, {
+  mutations: ['attributes'],
+  attributeFilter: ['class', 'disabled']
+});
+
+// Observe when children are added/removed
+utils.observeSelector('.product-list', (element, mutation) => {
+  if (mutation.type === 'childList') {
+    console.log('Children changed:', mutation.addedNodes.length, 'added');
+  }
+}, {
+  mutations: ['childList', 'subtree']
+});
+```
+
+#### `observeSelectors(selector, callback, options)`
+Observe mutations on all elements matching the selector. The callback is called every time any matching element is mutated. Note: This observes all matching elements. Use `observeSelector()` to observe only the first element.
+
+```javascript
+// Observe all product cards for attribute changes
+const stopObserving = utils.observeSelectors('.product-card', (element, mutation) => {
+  if (mutation.type === 'attributes' && mutation.attributeName === 'data-price') {
+    console.log('Price changed on:', element);
+  }
+}, {
+  mutations: ['attributes'],
+  attributeFilter: ['data-price', 'class']
+});
 ```
 
 ### Class Manipulation
