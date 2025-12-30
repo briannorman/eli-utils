@@ -1,6 +1,6 @@
 {
   "name": "@briannorman9/eli-utils",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Utility functions for web experiments with ELI (Experimentation Local Interface)",
   "main": "index.js",
   "type": "module",
